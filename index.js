@@ -140,25 +140,66 @@ entries() {
   const entriesArray = [];
   for (let bucket of this.buckets) {
     for (let pair of bucket) {
-      entries.push(pair);
+      entriesArray.push(pair);
     }
   }
   return entriesArray;
 }
 }
+const map = new Hashmap();
 
-const test = new HashMap()
+// set
+map.set("name", "Alice");
+map.set("age", "30");
+map.set("city", "Helsinki");
+map.set("country", "Finland");
 
+console.log("--- set ---");
+console.log(map.get("name"));    // Alice
+console.log(map.get("age"));     // 30
+console.log(map.get("missing")); // null
 
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
+// update existing key
+map.set("name", "Bob");
+console.log("\n--- update ---");
+console.log(map.get("name")); // Bob
+
+// has
+console.log("\n--- has ---");
+console.log(map.has("city"));    // true
+console.log(map.has("missing")); // false
+
+// length
+console.log("\n--- length ---");
+console.log(map.length()); // 4
+
+// remove
+console.log("\n--- remove ---");
+console.log(map.remove("age"));     // true
+console.log(map.remove("missing")); // false
+console.log(map.length());          // 3
+
+// keys, values, entries
+console.log("\n--- keys ---");
+console.log(map.keys()); // ["name", "city", "country"]
+
+console.log("\n--- values ---");
+console.log(map.values()); // ["Bob", "Helsinki", "Finland"]
+
+console.log("\n--- entries ---");
+console.log(map.entries()); // [["name","Bob"],["city","Helsinki"],["country","Finland"]]
+
+// resize — add enough entries to trigger it
+console.log("\n--- resize ---");
+for (let i = 0; i < 20; i++) {
+  map.set(`key${i}`, `value${i}`);
+}
+console.log("capacity after resize:", map.capacity); // 32 or 64
+console.log("size after resize:", map.length());     // 23
+
+// clear
+console.log("\n--- clear ---");
+map.clear();
+console.log(map.length()); // 0
+console.log(map.keys());   // []
+console.log(map.get("name")); // null
